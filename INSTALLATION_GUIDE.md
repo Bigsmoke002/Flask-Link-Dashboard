@@ -1,58 +1,54 @@
-# 🚀 User-Management Installation Guide
+# 🚀 User Management Installation Guide
+
+> See [README.md](README.md) first – this is an archived test project, no guarantee that anything works.
 
 ## Quick Start
 
-1. **Datenbank initialisieren:**
+1. **Initialize the database (optional):**
    ```bash
-   python database_update.py   # optional, app.py legt die DB auch selbst an
+   python database_update.py   # optional, app.py also creates the database by itself
    ```
 
-2. **App.py ersetzen:**
-   - (entfällt – app.py im Repo ist bereits die aktuelle Version)
-
-3. **Server starten:**
+2. **Start the server:**
    ```bash
    python app.py
    ```
 
-4. **Admin-Dashboard öffnen:**
+3. **Open the admin dashboard:**
    - URL: http://localhost:5000/admin/login
-   - Credentials: siehe admin_credentials.txt
+   - Credentials: see `admin_credentials.txt` (created on first start)
 
-## Was ist installiert?
+## What is included?
 
-✅ **User-Management:**
-- User erstellen/bearbeiten/löschen
-- Passwörter zurücksetzen
-- Berechtigungen vergeben
+✅ **User management:**
+- Create/edit/delete users
+- Reset passwords
+- Assign permissions
 
-✅ **Gruppen-System:**
-- Gruppen erstellen und verwalten
-- User zu Gruppen zuweisen
-- Ordner/Links auf Gruppen-Ebene
+✅ **Group system:**
+- Create and manage groups
+- Assign users to groups
+- Folders/links at group level
 
-✅ **Sicherheit:**
-- Argon2-Passwort-Verschlüsselung
-- Rate-Limiting
-- CSRF-Schutz
-- Audit-Logging
+✅ **Security:**
+- Argon2 password hashing
+- Rate limiting
+- CSRF protection
+- Audit logging
 
-✅ **API-Endpoints:**
-- `/api/admin/users` - User-Management
-- `/api/admin/groups` - Gruppen-Management
-- `/api/user/permissions` - Berechtigungen
+✅ **API endpoints:**
+- `/api/admin/users` – user management
+- `/api/admin/groups` – group management
+- `/api/user/permissions` – permissions
 
-## Nächste Schritte
+## Next steps
 
-1. Logge dich als Admin ein
-2. Erstelle deine ersten User
-3. Erstelle Gruppen und weise User zu
-4. Konfiguriere Berechtigungen
+1. Log in as admin
+2. Create your first users
+3. Create groups and assign users
+4. Configure permissions
 
-## Support
+## Files
 
 - Logs: `logs/dashboard.log`
-- Backup: `backup_*/`
 - Credentials: `admin_credentials.txt`
-
-Viel Erfolg! 🎉

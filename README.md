@@ -1,31 +1,30 @@
 # Flask-Link-Dashboard
 
-> ⚠️ **Archiviertes Testprojekt**
+> ⚠️ **Archived test project**
 >
-> Dieses Repository war ein privates Test- und Lernprojekt (Juni/Juli 2025) und wird
-> hier nur noch als Archiv bereitgestellt. Es wird **nicht weiterentwickelt** und es gibt
-> **keinen Support**. Eine Funktion kann **nicht garantiert** werden – Nutzung auf
-> eigene Gefahr. Nicht ohne eigene Prüfung produktiv einsetzen.
->
-> *Archived test project. No maintenance, no support, no guarantee that anything works.
-> Use at your own risk.*
+> This repository was a private test and learning project (June/July 2025) and is
+> provided here as an archive only. It is **not maintained** and there is **no support**.
+> **No guarantee is given that anything works** – use at your own risk. Do not run it
+> in production without reviewing it yourself.
 
-## Was ist das?
+## What is it?
 
-Ein selbst gehostetes Link-/Lesezeichen-Dashboard auf Basis von **Flask** und **SQLite**
-mit getrenntem Admin- und User-Bereich:
+A self-hosted link/bookmark dashboard built with **Flask** and **SQLite**, with separate
+admin and user areas:
 
-- **Admin-Bereich** (`/admin/login`): User anlegen, bearbeiten, deaktivieren, löschen,
-  Passwörter zurücksetzen, Gruppen verwalten, Statistiken
-- **User-Bereich** (`/login`): persönliches Dashboard mit Link-Sammlungen in Ordnern/Reitern
-- **Gruppen**: Ordner und Links können auf Gruppenebene zugewiesen werden
-- **Berechtigungen** pro User: Links hinzufügen / bearbeiten / löschen
-- **Sicherheit**: Argon2-Passwort-Hashing, CSRF-Schutz, Rate-Limiting,
-  Login-Sperre nach Fehlversuchen, Security-/Audit-Log
+- **Admin area** (`/admin/login`): create, edit, deactivate and delete users, reset
+  passwords, manage groups, view statistics
+- **User area** (`/login`): personal dashboard with link collections organized in folders/tabs
+- **Groups**: folders and links can be assigned at group level
+- **Per-user permissions**: add / edit / delete links
+- **Security**: Argon2 password hashing, CSRF protection, rate limiting,
+  lockout after failed logins, security/audit log
 
-## Schnellstart
+> Note: the user interface, log messages and code comments are in **German**.
 
-Voraussetzung: Python 3.10+
+## Quick start
+
+Requirement: Python 3.10+
 
 ```bash
 python -m venv venv
@@ -34,44 +33,44 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Danach:
+Then open:
 
-- User-Login: <http://localhost:5000/login>
-- Admin-Login: <http://localhost:5000/admin/login>
+- User login: <http://localhost:5000/login>
+- Admin login: <http://localhost:5000/admin/login>
 
-Beim ersten Start wird `databases/admin.db` angelegt und ein Standard-Admin erzeugt.
-Die Zugangsdaten stehen in `admin_credentials.txt` – **Passwort sofort ändern und die
-Datei danach löschen.**
+On first start, `databases/admin.db` is created along with a default admin account.
+The credentials are written to `admin_credentials.txt` – **change the password right
+away and delete that file afterwards.**
 
-### Konfiguration (optional)
+### Configuration (optional)
 
-Über Umgebungsvariablen:
+Via environment variables:
 
-| Variable     | Bedeutung                                                   | Standard        |
-|--------------|-------------------------------------------------------------|-----------------|
-| `SECRET_KEY` | Flask-Session-Schlüssel (ohne Angabe bei jedem Start neu → alle Sessions ungültig) | zufällig |
-| `PORT`       | Port des Servers                                            | `5000`          |
-| `FLASK_ENV`  | `production` aktiviert Secure-Cookies/HTTPS-Header, `development` den Debug-Modus | – |
+| Variable     | Meaning                                                      | Default   |
+|--------------|--------------------------------------------------------------|-----------|
+| `SECRET_KEY` | Flask session key (if unset, a new one is generated on every start, invalidating all sessions) | random |
+| `PORT`       | Server port                                                  | `5000`    |
+| `FLASK_ENV`  | `production` enables secure cookies/HTTPS headers, `development` enables debug mode | – |
 
-Eine Vorlage liegt in `.env.example`. `app.py` lädt diese Datei **nicht** automatisch –
-die Variablen müssen selbst gesetzt werden (z. B. `export SECRET_KEY=...`).
+A template is provided in `.env.example`. `app.py` does **not** load this file
+automatically – set the variables yourself (e.g. `export SECRET_KEY=...`).
 
-## Bekannter Stand / Einschränkungen
+## Known state / limitations
 
-Kurz getestet (Oktober 2026, Python 3.14, frische Datenbank): Start, Admin-Login,
-User anlegen, User-Login und Berechtigungs-API funktionieren. Alles andere ist ungetestet.
+Briefly tested (October 2026, Python 3.14, fresh database): startup, admin login,
+creating a user, user login and the permissions API work. Everything else is untested.
 
-- `folder_link_management.py` ist nur ein **Code-Fragment** (nutzt `app` ohne Import) und
-  ist nicht in `app.py` eingebunden – die Ordner-/Link-APIs pro Gruppe sind daher unvollständig.
-- Es gibt mehrere sich überschneidende Setup-/Migrationsskripte aus verschiedenen
-  Entwicklungsständen (`setup_dashboard.py`, `secure_setup.py`, `final_setup.py`,
-  `install_user_management.py`, `database_update.py`, `migrate_database.py`, `cleanup.py`).
-  Für einen frischen Start werden sie **nicht** benötigt – `app.py` legt die Datenbank selbst an.
-- Die Setup-Skripte enthalten feste **Demo-Passwörter** (z. B. `Demo123!`). Diese sind nur
-  Beispiele und dürfen niemals produktiv verwendet werden.
-- Läuft mit dem Flask-Entwicklungsserver. Für echten Betrieb wäre ein WSGI-Server
-  (gunicorn, waitress) plus Reverse-Proxy mit HTTPS nötig.
+- `folder_link_management.py` is only a **code fragment** (uses `app` without importing it)
+  and is not wired into `app.py` – the per-group folder/link APIs are therefore incomplete.
+- There are several overlapping setup/migration scripts from different development stages
+  (`setup_dashboard.py`, `secure_setup.py`, `final_setup.py`, `install_user_management.py`,
+  `database_update.py`, `migrate_database.py`, `cleanup.py`). They are **not** needed for a
+  fresh start – `app.py` creates the database by itself.
+- The setup scripts contain hard-coded **demo passwords** (e.g. `Demo123!`). These are
+  examples only and must never be used in production.
+- Runs on the Flask development server. Real deployment would require a WSGI server
+  (gunicorn, waitress) behind a reverse proxy with HTTPS.
 
-## Lizenz
+## License
 
 [MIT](LICENSE)
