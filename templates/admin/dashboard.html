@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <style>
+        /* =================================================================
+           DARK MODE ADMIN DASHBOARD - PREMIUM DESIGN
+           ================================================================= */
+
+        :root {
+            /* Dark Theme Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --bg-quaternary: #3a3a3a;
+            --bg-card: #1e1e1e;
+            --bg-hover: #252525;
+            
+            /* Text Colors */
+            --text-primary: #ffffff;
+            --text-secondary: #e5e5e5;
+            --text-muted: #a0a0a0;
+            --text-disabled: #666666;
+            
+            /* Accent Colors */
+            --accent-primary: #3b82f6;
+            --accent-secondary: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-purple: #8b5cf6;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            
+            /* Borders */
+            --border-primary: #333333;
+            --border-secondary: #404040;
+            --border-accent: #3b82f6;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+            
+            /* Transitions */
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* =================================================================
+           HEADER DESIGN
+           ================================================================= */
+
+        .admin-header {
+            background: var(--gradient-dark);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-title span {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5));
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* =================================================================
+           NAVIGATION TABS
+           ================================================================= */
+
+        .tab-nav {
+            background: var(--bg-secondary);
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-primary);
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition-fast);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-secondary);
+            background: var(--bg-hover);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent-primary);
+            background: var(--bg-hover);
+        }
+
+        .tab-btn span {
+            font-size: 1.2rem;
+        }
+
+        /* =================================================================
+           MAIN CONTENT LAYOUT
+           ================================================================= */
+
+        .admin-container {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* =================================================================
+           CARDS & GRID LAYOUTS
+           ================================================================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gradient-dark);
+            border: 1px solid var(--border-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-accent);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* User Grid */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .user-card {
+            background: var(--gradient-dark);
+            border: 1px solid var(--border-secondary);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-success);
+        }
+
+        .user-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-secondary);
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-active {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .status-inactive {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .user-details {
+            margin: 1rem 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .permissions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .permission-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            background: var(--bg-quaternary);
+            color: var(--text-muted);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .permission-tag.allowed {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* =================================================================
+           BUTTONS
+           ================================================================= */
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-fast);
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: var(--transition-normal);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* =================================================================
+           MODALS
+           ================================================================= */
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-normal);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--gradient-dark);
+            border: 1px solid var(--border-secondary);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition-normal);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            padding: 0.25rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .close-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
+        }
+
+        /* =================================================================
+           FORMS
+           ================================================================= */
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-secondary);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-primary);
+        }
+
+        .checkbox-label {
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        /* =================================================================
+           ALERTS
+           ================================================================= */
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-secondary);
+            color: var(--accent-secondary);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        /* =================================================================
+           LOADING ANIMATION
+           ================================================================= */
+
+        .loading {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* =================================================================
+           RESPONSIVE DESIGN
+           ================================================================= */
+
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tab-nav {
+                padding: 0 1rem;
+            }
+
+            .tab-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* =================================================================
+           SPECIAL EFFECTS
+           ================================================================= */
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content.active {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: var(--radius-sm);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <h1 class="admin-title">
+                <span>🛡️</span>
+                Admin Dashboard
+            </h1>
+            <div class="header-actions">
+                <span style="color: var(--text-muted);">Willkommen, {{ username }}</span>
+                <a href="/admin/logout" class="btn btn-warning btn-sm" onclick="return confirm('Wirklich abmelden?')">
+                    <span>🚪</span> Abmelden
+                </a>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="showTab('users')">
+                <span>👥</span> User Management
+            </button>
+            <button class="tab-btn" onclick="showTab('groups')">
+                <span>🏘️</span> Gruppen
+            </button>
+            <button class="tab-btn" onclick="showTab('permissions')">
+                <span>🔐</span> Berechtigungen
+            </button>
+            <button class="tab-btn" onclick="showTab('stats')">
+                <span>📊</span> Statistiken
+            </button>
+        </nav>
+
+        <!-- Users Tab -->
+        <div id="users-tab" class="tab-content active">
+            <div class="section-header">
+                <h2 class="section-title">User Management</h2>
+                <button class="btn btn-primary" onclick="openUserModal()">
+                    <span>➕</span> Neuen User erstellen
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-users">0</div>
+                    <div class="stat-label">Gesamt User</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-users">0</div>
+                    <div class="stat-label">Aktive User</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="inactive-users">0</div>
+                    <div class="stat-label">Inaktive User</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="admin-users">0</div>
+                    <div class="stat-label">Admin User</div>
+                </div>
+            </div>
+
+            <div id="users-grid" class="users-grid">
+                <!-- User cards werden hier dynamisch eingefügt -->
+            </div>
+        </div>
+
+        <!-- Groups Tab -->
+        <div id="groups-tab" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Gruppen Management</h2>
+                <button class="btn btn-primary" onclick="openGroupModal()">
+                    <span>➕</span> Neue Gruppe erstellen
+                </button>
+            </div>
+
+            <div id="groups-grid" class="users-grid">
+                <!-- Gruppen werden hier angezeigt -->
+            </div>
+        </div>
+
+        <!-- Permissions Tab -->
+        <div id="permissions-tab" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">Standard-Berechtigungen</h2>
+            </div>
+
+            <div style="background: var(--gradient-dark); border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); padding: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; color: var(--text-primary);">Standard-Berechtigungen für neue User</h3>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="default-can-edit" class="checkbox" checked>
+                    <label for="default-can-edit" class="checkbox-label">Links bearbeiten erlauben</label>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="default-can-delete" class="checkbox">
+                    <label for="default-can-delete" class="checkbox-label">Links löschen erlauben</label>
+                </div>
+                
+                <div class="form-checkbox">
+                    <input type="checkbox" id="default-can-add" class="checkbox" checked>
+                    <label for="default-can-add" class="checkbox-label">Links hinzufügen erlauben</label>
+                </div>
+                
+                <button class="btn btn-success" onclick="saveDefaultPermissions()" style="margin-top: 1.5rem;">
+                    <span>💾</span> Speichern
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="section-header">
+                <h2 class="section-title">System Statistiken</h2>
+            </div>
+            
+            <div style="background: var(--gradient-dark); border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); padding: 2rem;">
+                <h3 style="color: var(--text-primary); margin-bottom: 1rem;">System Status</h3>
+                <p style="color: var(--text-secondary);">Detaillierte Statistiken werden hier angezeigt...</p>
+                
+                <div class="stats-grid" style="margin-top: 2rem;">
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">System Health</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-logins">0</div>
+                        <div class="stat-label">Gesamt Logins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="failed-logins">0</div>
+                        <div class="stat-label">Fehlgeschlagene Logins</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Modal -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="user-modal-title">Neuen User erstellen</h3>
+                <button class="close-btn" onclick="closeUserModal()">&times;</button>
+            </div>
+            
+            <div id="user-modal-alert"></div>
+            
+            <form id="user-form">
+                <div class="form-group">
+                    <label class="form-label">Username *</label>
+                    <input type="text" id="user-username" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email" id="user-email" class="form-input" required>
+                </div>
+                
+                <div class="form-group" id="password-group">
+                    <label class="form-label">Passwort *</label>
+                    <input type="password" id="user-password" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="user-active" class="checkbox" checked>
+                        <label for="user-active" class="checkbox-label">Aktiv</label>
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="user-can-edit" class="checkbox" checked>
+                        <label for="user-can-edit" class="checkbox-label">Links bearbeiten</label>
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="user-can-delete" class="checkbox">
+                        <label for="user-can-delete" class="checkbox-label">Links löschen</label>
+                    </div>
+                    
+                    <div class="form-checkbox">
+                        <input type="checkbox" id="user-can-add" class="checkbox" checked>
+                        <label for="user-can-add" class="checkbox-label">Links hinzufügen</label>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="user-submit-btn" style="flex: 1;">
+                        <span>💾</span> Speichern
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeUserModal()">
+                        Abbrechen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Group Modal -->
+    <div id="group-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="group-modal-title">Neue Gruppe erstellen</h3>
+                <button class="close-btn" onclick="closeGroupModal()">&times;</button>
+            </div>
+            
+            <div id="group-modal-alert"></div>
+            
+            <form id="group-form">
+                <div class="form-group">
+                    <label class="form-label">Gruppen-Name *</label>
+                    <input type="text" id="group-name" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Beschreibung</label>
+                    <input type="text" id="group-description" class="form-input">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="group-submit-btn" style="flex: 1;">
+                        <span>💾</span> Speichern
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeGroupModal()">
+                        Abbrechen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Passwort zurücksetzen</h3>
+                <button class="close-btn" onclick="closePasswordModal()">&times;</button>
+            </div>
+            
+            <div id="password-modal-alert"></div>
+            
+            <form id="password-form">
+                <div class="form-group">
+                    <label class="form-label">Neues Passwort *</label>
+                    <input type="password" id="new-password" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Passwort bestätigen *</label>
+                    <input type="password" id="confirm-password" class="form-input" required>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" id="password-submit-btn" style="flex: 1;">
+                        <span>🔄</span> Zurücksetzen
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">
+                        Abbrechen
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global Variables
+        let users = [];
+        let groups = [];
+        let currentUserId = null;
+        let currentGroupId = null;
+
+        // Tab Management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load data based on tab
+            if (tabName === 'users') {
+                loadUsers();
+            } else if (tabName === 'groups') {
+                loadGroups();
+            }
+        }
+
+        // Modal Management
+        function openUserModal(userId = null) {
+            currentUserId = userId;
+            const modal = document.getElementById('user-modal');
+            const title = document.getElementById('user-modal-title');
+            const passwordGroup = document.getElementById('password-group');
+            
+            if (userId) {
+                title.textContent = 'User bearbeiten';
+                passwordGroup.style.display = 'none';
+                
+                // Load user data
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    document.getElementById('user-username').value = user.username;
+                    document.getElementById('user-email').value = user.email;
+                    document.getElementById('user-active').checked = user.is_active;
+                    document.getElementById('user-can-edit').checked = user.can_edit_links;
+                    document.getElementById('user-can-delete').checked = user.can_delete_links;
+                    document.getElementById('user-can-add').checked = user.can_add_links;
+                }
+            } else {
+                title.textContent = 'Neuen User erstellen';
+                passwordGroup.style.display = 'block';
+                document.getElementById('user-form').reset();
+                document.getElementById('user-active').checked = true;
+                document.getElementById('user-can-edit').checked = true;
+                document.getElementById('user-can-add').checked = true;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeUserModal() {
+            document.getElementById('user-modal').classList.remove('active');
+            document.getElementById('user-modal-alert').innerHTML = '';
+            currentUserId = null;
+        }
+
+        function openGroupModal(groupId = null) {
+            currentGroupId = groupId;
+            const modal = document.getElementById('group-modal');
+            const title = document.getElementById('group-modal-title');
+            
+            if (groupId) {
+                title.textContent = 'Gruppe bearbeiten';
+                const group = groups.find(g => g.id === groupId);
+                if (group) {
+                    document.getElementById('group-name').value = group.name;
+                    document.getElementById('group-description').value = group.description;
+                }
+            } else {
+                title.textContent = 'Neue Gruppe erstellen';
+                document.getElementById('group-form').reset();
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeGroupModal() {
+            document.getElementById('group-modal').classList.remove('active');
+            document.getElementById('group-modal-alert').innerHTML = '';
+            currentGroupId = null;
+        }
+
+        function openPasswordModal(userId) {
+            currentUserId = userId;
+            document.getElementById('password-form').reset();
+            document.getElementById('password-modal').classList.add('active');
+        }
+
+        function closePasswordModal() {
+            document.getElementById('password-modal').classList.remove('active');
+            document.getElementById('password-modal-alert').innerHTML = '';
+            currentUserId = null;
+        }
+
+        // API Calls
+        async function apiCall(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'API Fehler');
+                }
+                
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // User Management
+        async function loadUsers() {
+            try {
+                const data = await apiCall('/api/admin/users');
+                users = data.users;
+                renderUsers();
+                updateUserStats();
+            } catch (error) {
+                showAlert('users-grid', 'Fehler beim Laden der User: ' + error.message, 'error');
+            }
+        }
+
+        function renderUsers() {
+            const grid = document.getElementById('users-grid');
+            
+            if (users.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Keine User gefunden</p>';
+                return;
+            }
+            
+            grid.innerHTML = users.map(user => `
+                <div class="user-card">
+                    <div class="user-header">
+                        <div class="user-name">${user.username}</div>
+                        <div class="user-status ${user.is_active ? 'status-active' : 'status-inactive'}">
+                            ${user.is_active ? 'Aktiv' : 'Inaktiv'}
+                        </div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">${user.email || 'Nicht angegeben'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Gruppen:</span>
+                            <span class="detail-value">${user.group_count || 0}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Erstellt:</span>
+                            <span class="detail-value">${formatDate(user.created_at)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Letzter Login:</span>
+                            <span class="detail-value">${user.last_login ? formatDate(user.last_login) : 'Nie'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="permissions">
+                        <div class="permission-tag ${user.can_edit_links ? 'allowed' : ''}">
+                            ${user.can_edit_links ? '✅' : '❌'} Bearbeiten
+                        </div>
+                        <div class="permission-tag ${user.can_delete_links ? 'allowed' : ''}">
+                            ${user.can_delete_links ? '✅' : '❌'} Löschen
+                        </div>
+                        <div class="permission-tag ${user.can_add_links ? 'allowed' : ''}">
+                            ${user.can_add_links ? '✅' : '❌'} Hinzufügen
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="openUserModal(${user.id})">
+                            <span>✏️</span> Bearbeiten
+                        </button>
+                        <button class="btn btn-warning btn-sm" onclick="openPasswordModal(${user.id})">
+                            <span>🔑</span> Passwort
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id}, '${user.username}')">
+                            <span>🗑️</span> Löschen
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateUserStats() {
+            const totalUsers = users.length;
+            const activeUsers = users.filter(u => u.is_active).length;
+            const inactiveUsers = totalUsers - activeUsers;
+            const adminUsers = users.filter(u => u.is_admin).length;
+            
+            document.getElementById('total-users').textContent = totalUsers;
+            document.getElementById('active-users').textContent = activeUsers;
+            document.getElementById('inactive-users').textContent = inactiveUsers;
+            document.getElementById('admin-users').textContent = adminUsers;
+        }
+
+        // Group Management
+        async function loadGroups() {
+            try {
+                const data = await apiCall('/api/admin/groups');
+                groups = data.groups;
+                renderGroups();
+            } catch (error) {
+                showAlert('groups-grid', 'Fehler beim Laden der Gruppen: ' + error.message, 'error');
+            }
+        }
+
+        function renderGroups() {
+            const grid = document.getElementById('groups-grid');
+            
+            if (groups.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">Keine Gruppen gefunden</p>';
+                return;
+            }
+            
+            grid.innerHTML = groups.map(group => `
+                <div class="user-card">
+                    <div class="user-header">
+                        <div class="user-name">${group.name}</div>
+                        <div class="user-status status-active">Aktiv</div>
+                    </div>
+                    
+                    <div class="user-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Beschreibung:</span>
+                            <span class="detail-value">${group.description || 'Keine Beschreibung'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Mitglieder:</span>
+                            <span class="detail-value">${group.member_count || 0}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Links:</span>
+                            <span class="detail-value">${group.link_count || 0}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Erstellt:</span>
+                            <span class="detail-value">${formatDate(group.created_at)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="openGroupModal(${group.id})">
+                            <span>✏️</span> Bearbeiten
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteGroup(${group.id}, '${group.name}')">
+                            <span>🗑️</span> Löschen
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Form Handlers
+        document.getElementById('user-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('user-submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Speichern...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = {
+                    username: document.getElementById('user-username').value,
+                    email: document.getElementById('user-email').value,
+                    is_active: document.getElementById('user-active').checked,
+                    can_edit_links: document.getElementById('user-can-edit').checked,
+                    can_delete_links: document.getElementById('user-can-delete').checked,
+                    can_add_links: document.getElementById('user-can-add').checked
+                };
+                
+                if (!currentUserId) {
+                    formData.password = document.getElementById('user-password').value;
+                }
+                
+                const url = currentUserId ? `/api/admin/users/${currentUserId}` : '/api/admin/users';
+                const method = currentUserId ? 'PUT' : 'POST';
+                
+                const result = await apiCall(url, {
+                    method: method,
+                    body: JSON.stringify(formData)
+                });
+                
+                showAlert('user-modal-alert', result.message, 'success');
+                setTimeout(() => {
+                    closeUserModal();
+                    loadUsers();
+                }, 1500);
+                
+            } catch (error) {
+                showAlert('user-modal-alert', error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('group-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('group-submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Speichern...';
+            submitBtn.disabled = true;
+            
+            try {
+                const formData = {
+                    name: document.getElementById('group-name').value,
+                    description: document.getElementById('group-description').value
+                };
+                
+                const url = currentGroupId ? `/api/admin/groups/${currentGroupId}` : '/api/admin/groups';
+                const method = currentGroupId ? 'PUT' : 'POST';
+                
+                const result = await apiCall(url, {
+                    method: method,
+                    body: JSON.stringify(formData)
+                });
+                
+                showAlert('group-modal-alert', result.message, 'success');
+                setTimeout(() => {
+                    closeGroupModal();
+                    loadGroups();
+                }, 1500);
+                
+            } catch (error) {
+                showAlert('group-modal-alert', error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('password-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (newPassword !== confirmPassword) {
+                showAlert('password-modal-alert', 'Passwörter stimmen nicht überein', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('password-submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Zurücksetzen...';
+            submitBtn.disabled = true;
+            
+            try {
+                const result = await apiCall(`/api/admin/users/${currentUserId}/reset-password`, {
+                    method: 'POST',
+                    body: JSON.stringify({ new_password: newPassword })
+                });
+                
+                showAlert('password-modal-alert', result.message, 'success');
+                setTimeout(() => {
+                    closePasswordModal();
+                }, 1500);
+                
+            } catch (error) {
+                showAlert('password-modal-alert', error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Delete Functions
+        async function deleteUser(userId, username) {
+            if (!confirm(`User "${username}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.`)) {
+                return;
+            }
+            
+            try {
+                const result = await apiCall(`/api/admin/users/${userId}`, {
+                    method: 'DELETE'
+                });
+                
+                showAlert('users-grid', result.message, 'success');
+                loadUsers();
+                
+            } catch (error) {
+                showAlert('users-grid', 'Fehler beim Löschen: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteGroup(groupId, groupName) {
+            if (!confirm(`Gruppe "${groupName}" wirklich löschen?\n\nDiese Aktion kann nicht rückgängig gemacht werden.`)) {
+                return;
+            }
+            
+            try {
+                const result = await apiCall(`/api/admin/groups/${groupId}`, {
+                    method: 'DELETE'
+                });
+                
+                showAlert('groups-grid', result.message, 'success');
+                loadGroups();
+                
+            } catch (error) {
+                showAlert('groups-grid', 'Fehler beim Löschen: ' + error.message, 'error');
+            }
+        }
+
+        // Utility Functions
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            const icon = type === 'success' ? '✅' : '❌';
+            
+            if (container) {
+                container.innerHTML = `
+                    <div class="alert ${alertClass}">
+                        <span>${icon}</span>
+                        ${message}
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 5000);
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Unbekannt';
+            try {
+                return new Date(dateString).toLocaleDateString('de-DE', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return 'Ungültiges Datum';
+            }
+        }
+
+        function saveDefaultPermissions() {
+            const canEdit = document.getElementById('default-can-edit').checked;
+            const canDelete = document.getElementById('default-can-delete').checked;
+            const canAdd = document.getElementById('default-can-add').checked;
+            
+            // Hier würde normalerweise ein API-Call gemacht
+            console.log('Standard-Berechtigungen gespeichert:', { canEdit, canDelete, canAdd });
+            
+            showAlert('permissions-tab', 'Standard-Berechtigungen erfolgreich gespeichert!', 'success');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <style>
+        :root {
+            --admin-red: #dc2626;
+            --admin-red-light: #ef4444;
+            --admin-orange: #ea580c;
+            --admin-blue: #2563eb;
+            --admin-green: #16a34a;
+            --admin-purple: #7c3aed;
+            --admin-gray: #6b7280;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --bg-quaternary: #475569;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --border-primary: #334155;
+            --border-secondary: #475569;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            
+            --transition: all 0.15s ease-in-out;
+        }
+
+        /* Dark Theme (Default) */
+        --primary-color: #5865f2;
+        --primary-hover: #4752c4;
+        --primary-light: #7289da;
+        --secondary-color: #747f8d;
+        --accent-color: #57f287;
+        --danger-color: #ed4245;
+        --warning-color: #fee75c;
+
+        --bg-primary: #2f3136;
+        --bg-secondary: #36393f;
+        --bg-tertiary: #40444b;
+        --bg-quaternary: #4f545c;
+
+        --text-primary: #ffffff;
+        --text-secondary: #b9bbbe;
+        --text-muted: #72767d;
+        --text-link: #00aff4;
+
+        --border-color: #202225;
+        --border-light: #40444b;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --glow-color: rgba(88, 101, 242, 0.3);
+
+        --border-radius: 8px;
+        --border-radius-lg: 12px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+        /* Alternative Color Themes */
+        [data-theme="purple"] {
+            --primary-color: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --primary-light: #a78bfa;
+            --glow-color: rgba(139, 92, 246, 0.3);
+        }
+
+        [data-theme="green"] {
+            --primary-color: #10b981;
+            --primary-hover: #059669;
+            --primary-light: #34d399;
+            --glow-color: rgba(16, 185, 129, 0.3);
+        }
+
+        [data-theme="red"] {
+            --primary-color: #ef4444;
+            --primary-hover: #dc2626;
+            --primary-light: #f87171;
+            --glow-color: rgba(239, 68, 68, 0.3);
+        }
+
+        [data-theme="blue"] {
+            --primary-color: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: #60a5fa;
+            --glow-color: rgba(59, 130, 246, 0.3);
+        }
+
+        [data-theme="pink"] {
+            --primary-color: #ec4899;
+            --primary-hover: #db2777;
+            --primary-light: #f472b6;
+            --glow-color: rgba(236, 72, 153, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--admin-blue), var(--admin-purple));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-quaternary);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--admin-red), var(--admin-red-light));
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn .icon {
+            font-size: 14px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--admin-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 4px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .flash-message {
+            padding: 16px 20px;
+            border-radius: var(--border-radius-lg);
+            color: white;
+            font-weight: 500;
+            animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 320px;
+            max-width: 400px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .flash-message.success {
+            background: linear-gradient(135deg, var(--accent-color), #22c55e);
+            border-left: 4px solid #16a34a;
+        }
+
+        .flash-message.error {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+            border-left: 4px solid #b91c1c;
+        }
+
+        .flash-message.info {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border-left: 4px solid var(--primary-hover);
+        }
+
+        .flash-message.warning {
+            background: linear-gradient(135deg, var(--warning-color), #eab308);
+            border-left: 4px solid #ca8a04;
+            color: #1f2937;
+        }
+
+        .flash-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutToRight {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+
+            .flash-message {
+                min-width: auto;
+                margin: 0 16px;
+                max-width: calc(100vw - 32px);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-quaternary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-light);
+        }
+
+        /* Utility classes */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+
+        .mb-0 { margin-bottom: 0; }
+        .mb-1 { margin-bottom: 8px; }
+        .mb-2 { margin-bottom: 16px; }
+        .mb-3 { margin-bottom: 24px; }
+
+        .mt-0 { margin-top: 0; }
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mt-3 { margin-top: 24px; }
+
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 8px; }
+        .gap-2 { gap: 16px; }
+        .gap-3 { gap: 24px; }
+
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+
+        .opacity-50 { opacity: 0.5; }
+        .opacity-75 { opacity: 0.75; }
+
+        .hidden { display: none; }
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body data-theme="default">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        <span class="flash-icon">
+                            {% if category == 'success' %}✅
+                            {% elif category == 'error' %}❌
+                            {% elif category == 'warning' %}⚠️
+                            {% else %}ℹ️{% endif %}
+                        </span>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <script>
+        // Auto-hide flash messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach((message, index) => {
+                setTimeout(() => {
+                    message.style.animation = 'slideOutToRight 0.4s ease-in forwards';
+                    setTimeout(() => {
+                        if (message.parentNode) {
+                            message.remove();
+                        }
+                    }, 400);
+                }, 4000 + (index * 500));
+            });
+        });
+
+        // Global utility functions
+        function showLoading(button) {
+            if (button) {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="loading"></span> Laden...';
+                button.disabled = true;
+                button.dataset.originalText = originalText;
+            }
+        }
+
+        function hideLoading(button) {
+            if (button && button.dataset.originalText) {
+                button.innerHTML = button.dataset.originalText;
+                button.disabled = false;
+                delete button.dataset.originalText;
+            }
+        }
+
+        // Theme detection and application
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('adminTheme') || 'default';
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('adminTheme', theme);
+        }
+
+        // Load theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

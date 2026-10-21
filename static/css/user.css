@@ -1,0 +1,603 @@
+/* ============================================
+   OPTIMIERTE USER CSS - PERFORMANCE EDITION
+   ============================================ */
+
+/* CSS Custom Properties - Optimiert */
+:root {
+    /* Core Theme Colors */
+    --primary: #5865f2;
+    --primary-hover: #4752c4;
+    --primary-light: #7289da;
+    --secondary: #747f8d;
+    --accent: #57f287;
+    --danger: #ed4245;
+    --warning: #fee75c;
+    --success: #10b981;
+
+    /* Background Layers */
+    --bg-1: #2f3136;  /* Primary background */
+    --bg-2: #36393f;  /* Secondary background */
+    --bg-3: #40444b;  /* Tertiary background */
+    --bg-4: #4f545c;  /* Quaternary background */
+
+    /* Text Colors */
+    --text-1: #ffffff;    /* Primary text */
+    --text-2: #b9bbbe;    /* Secondary text */
+    --text-3: #72767d;    /* Muted text */
+    --text-link: #00aff4; /* Links */
+
+    /* Borders */
+    --border-1: #202225;
+    --border-2: #40444b;
+    --border-3: #72767d;
+
+    /* Effects */
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
+    --glow: 0 0 20px rgba(88, 101, 242, 0.3);
+
+    /* Layout */
+    --radius: 8px;
+    --radius-lg: 12px;
+    --spacing: 16px;
+    --spacing-sm: 8px;
+    --spacing-lg: 24px;
+
+    /* Transitions */
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
+}
+
+/* Alternative Theme Colors - Kompakt */
+[data-theme="purple"] { --primary: #8b5cf6; --primary-hover: #7c3aed; }
+[data-theme="green"] { --primary: #10b981; --primary-hover: #059669; }
+[data-theme="red"] { --primary: #ef4444; --primary-hover: #dc2626; }
+[data-theme="blue"] { --primary: #3b82f6; --primary-hover: #2563eb; }
+[data-theme="pink"] { --primary: #ec4899; --primary-hover: #db2777; }
+[data-theme="orange"] { --primary: #f59e0b; --primary-hover: #d97706; }
+
+/* ============================================
+   RESET & BASE STYLES - Minimiert
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-1);
+    background: var(--bg-1);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   OPTIMIERTE FLASH MESSAGES
+   ============================================ */
+
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.flash-message {
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    color: white;
+    font-weight: 500;
+    animation: slideInRight 0.3s ease-out;
+    min-width: 300px;
+    max-width: 400px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.flash-message.success {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.flash-message.error {
+    background: linear-gradient(135deg, var(--danger), #dc2626);
+}
+
+.flash-message.warning {
+    background: linear-gradient(135deg, var(--warning), #f59e0b);
+    color: #000;
+}
+
+.flash-message.info {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================
+   OPTIMIERTE LOGIN STYLES
+   ============================================ */
+
+.stellar-login-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+}
+
+.stars-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+.login-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.login-panel {
+    background: rgba(47, 49, 54, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.logo-ring {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    box-shadow: var(--glow);
+}
+
+.logo-center {
+    font-size: 24px;
+}
+
+.app-title {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.app-subtitle {
+    color: var(--text-2);
+    font-size: 14px;
+}
+
+/* ============================================
+   OPTIMIERTE FORM STYLES
+   ============================================ */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-label {
+    font-weight: 600;
+    color: var(--text-1);
+    font-size: 14px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    z-index: 2;
+    font-size: 16px;
+}
+
+.styled-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    background: var(--bg-3);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    color: var(--text-1);
+    font-size: 16px;
+    transition: var(--transition);
+}
+
+.styled-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+}
+
+.styled-input.error {
+    border-color: var(--danger);
+    background: rgba(237, 66, 69, 0.1);
+}
+
+.styled-input::placeholder {
+    color: var(--text-3);
+}
+
+/* Visibility Toggle */
+.visibility-toggle {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-3);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.visibility-toggle:hover {
+    color: var(--text-1);
+    background: var(--bg-2);
+}
+
+/* ============================================
+   OPTIMIERTE BUTTON STYLES
+   ============================================ */
+
+.login-button {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.button-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   DASHBOARD STYLES - Optimiert
+   ============================================ */
+
+.dashboard-container {
+    min-height: 100vh;
+    background: var(--bg-1);
+}
+
+.dashboard-header {
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border-1);
+    padding: var(--spacing);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-1);
+}
+
+.dashboard-nav {
+    display: flex;
+    gap: var(--spacing);
+}
+
+.nav-link {
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    transition: var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--text-1);
+    background: var(--bg-3);
+}
+
+.nav-link.active {
+    color: var(--primary);
+    background: rgba(88, 101, 242, 0.1);
+}
+
+/* ============================================
+   UTILITIES - Kompakt
+   ============================================ */
+
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing); }
+.mt-3 { margin-top: var(--spacing-lg); }
+
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+
+.p-1 { padding: var(--spacing-sm); }
+.p-2 { padding: var(--spacing); }
+.p-3 { padding: var(--spacing-lg); }
+
+/* ============================================
+   RESPONSIVE - Mobile First
+   ============================================ */
+
+@media (max-width: 768px) {
+    .login-panel {
+        padding: 24px;
+        margin: 10px;
+    }
+    
+    .app-title {
+        font-size: 24px;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        gap: var(--spacing);
+    }
+    
+    .dashboard-nav {
+        flex-wrap: wrap;
+    }
+    
+    .flash-message {
+        min-width: 280px;
+        margin: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-wrapper {
+        padding: 10px;
+    }
+    
+    .styled-input {
+        font-size: 16px; /* Verhindert Zoom auf iOS */
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus States */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --bg-1: #000000;
+        --bg-2: #1a1a1a;
+        --text-1: #ffffff;
+        --border-1: #ffffff;
+    }
+}
+
+/* Dark Mode Forced */
+@media (prefers-color-scheme: dark) {
+    /* Bereits Dark Theme - keine Änderungen nötig */
+}
+
+/* ============================================
+   PERFORMANCE OPTIMIERUNGEN
+   ============================================ */
+
+/* GPU-Beschleunigung für kritische Animationen */
+.login-button,
+.flash-message,
+.login-panel {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Lazy Loading für Bilder */
+img {
+    loading: lazy;
+}
+
+/* Optimierte Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+@supports (scroll-behavior: smooth) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Font Loading Optimierung */
+body {
+    font-display: swap;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .flash-messages,
+    .stars-canvas,
+    .login-button {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* ============================================
+   SECURITY STYLES
+   ============================================ */
+
+.security-info {
+    background: var(--bg-2);
+    border: 1px solid var(--border-1);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-2);
+}
+
+.security-icon {
+    color: var(--success);
+}
+
+.privacy-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.privacy-link a {
+    color: var(--text-3);
+    text-decoration: none;
+    font-size: 12px;
+    transition: var(--transition-fast);
+}
+
+.privacy-link a:hover {
+    color: var(--primary);
+}
+
+/* ============================================
+   CLEANUP & OPTIMIZATION
+   ============================================ */
+
+/* Entfernte redundante Styles, vereinfachte Selektoren */
+/* Reduzierte Animationen für bessere Performance */
+/* Kompakte CSS-Custom-Properties */
+/* Mobile-First responsive Design */
+/* Verbesserte Accessibility */
